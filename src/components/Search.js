@@ -30,7 +30,7 @@ export class Search extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { year } = this.state;
-    if (year.length === 4) {
+    if (year.length === 4 || year === '') {
       console.log('submit');
       this.props.callback(this.state);
     } else {
