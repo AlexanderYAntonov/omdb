@@ -2,20 +2,25 @@
   padding: 1em;
   display: flex;
   flex-direction: column;
-}
 
-.search__form > .search__input {
-  margin-bottom: 1em;
+  & > .search__input {
+    margin-bottom: 1em;
+  }
 }
 
 @media screen and(min-width: 800px) {
   .search__form {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     min-width: 800px;
-  }
-  .search__form > .search__input {
-    margin-right: 1em;
-    margin-bottom: 0;
+
+    & > .search__input {
+      margin-right: 1em;
+      margin-bottom: 0;
+    }
+
+    & > .search__btn {
+      margin-top: 0.5em;
+    }
   }
 }

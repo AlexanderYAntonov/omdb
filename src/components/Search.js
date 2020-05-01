@@ -7,24 +7,43 @@ import './Search.scss';
 export class Search extends React.Component {
   state = {
     title: '',
-    year: ''
+    year: '',
+    yearIsValid: true
   };
 
   handleChange = (e) => {
-    const { id, value } = e.currentTarget;
-    console.log(id, value);
-    this.setState({ [id]: value });
+    let { name, value } = e.currentTarget;
+    console.log(name, value);
+    if (name === 'year') {
+      value = value.replace(/\D/g, '');
+      if (value.length > 4) {
+        value = value.slice(0, 4);
+      }
+      if (value.length === 4) {
+        this.setState({ yearIsValid: true });
+      }
+    }
+    this.setState({ [name]: value });
     // this.setState({ value: event.target.value });
   };
 
   handleSubmit = (e) => {
-    console.log('submit');
-    this.props.callback(this.state);
+    e.preventDefault();
+    const { year } = this.state;
+    if (year.length === 4) {
+      console.log('submit');
+      this.props.callback(this.state);
+    } else {
+      console.log('year invalid');
+      this.setState({ yearIsValid: false });
+    }
+
     // this.setState({ value: event.target.value });
   };
 
   render() {
-    const { title, year } = this.state;
+    const { title, year, yearIsValid } = this.state;
+    console.log(title, year);
     return (
       <form
         autoComplete="off"
@@ -36,16 +55,18 @@ export class Search extends React.Component {
           className="search__input"
           label="Название"
           variant="outlined"
-          id="title"
+          name="title"
           value={title}
           onChange={this.handleChange}
         />
         <TextField
-          id="year"
+          error={!yearIsValid}
+          name="year"
           className="search__input"
           label="Год"
           variant="outlined"
           value={year}
+          helperText={!yearIsValid ? 'Год должен содержать 4 цифры' : ''}
           onChange={this.handleChange}
         />
         <Button
