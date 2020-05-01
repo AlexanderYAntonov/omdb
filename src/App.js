@@ -55,10 +55,11 @@ class App extends React.Component {
   render() {
     // const listData = [];
     const { list, totalPages } = this.state;
+    console.log(list);
     return (
       <Container maxWidth="md">
         <Search callback={this.searchCallback} />
-        <List data={list} />
+        <List list={list} />
         <Pagination
           count={totalPages}
           color="primary"
