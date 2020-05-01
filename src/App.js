@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
+import { List } from './components/List';
+import { Search } from './components/Search';
+// import Pagination from '@material-ui/lab/Pagination';
+
+import Container from '@material-ui/core/Container';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  searchCallback = (formData) => {
+    // set page num
+
+    console.log('make search');
+    console.log(formData);
+  };
+
+  handleChange = (event, value) => {
+    console.log(`page = ${value}`);
+  };
+
+  render() {
+    const listData = [];
+    return (
+      <Container maxWidth="md">
+        <Search callback={this.searchCallback} />
+        <List data={listData} />
+        {/* <Pagination count={10} color="primary" onChange={this.handleChange} /> */}
+      </Container>
+    );
+  }
 }
 
 export default App;
