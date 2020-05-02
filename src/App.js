@@ -6,7 +6,8 @@ import Pagination from '@material-ui/lab/Pagination';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Container from '@material-ui/core/Container';
-import './App.css';
+import './App.scss';
+import './styles.scss';
 
 const apiKey = '1977b733';
 const prefixUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
@@ -39,6 +40,19 @@ class App extends React.Component {
     formData: {}
   };
 
+  Preloader = () => {
+    return (
+      <div className={'lds-container'}>
+        <div className={'lds-ellipsis'}>
+          <div />
+          <div />
+          <div />
+          <div />
+        </div>
+      </div>
+    );
+  };
+
   searchCallback = (formData) => {
     this.setState({ formData, pageNum: 1 });
     this.getData(formData);
@@ -63,12 +77,14 @@ class App extends React.Component {
         const totalPages = data['totalResults']
           ? Math.ceil(data['totalResults'] / 10)
           : 0;
-        this.setState({
-          isLoading: false,
-          list: data['Search'] || [],
-          success: data['Response'],
-          totalPages
-        });
+        setTimeout(() => {
+          this.setState({
+            isLoading: false,
+            list: data['Search'] || [],
+            success: data['Response'],
+            totalPages
+          });
+        }, 3000);
       })
       .catch((error) => {
         console.error(error);
@@ -87,32 +103,41 @@ class App extends React.Component {
           page={pageNum}
           color="primary"
           onChange={this.handleChange}
+          className={'app__paginator'}
         />
       );
     }
     return tmpl;
   }
 
-  render() {
-    const { list } = this.state;
+  routerTemplate = (list, isLoading) => {
     return (
-      <Container maxWidth="md">
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <React.Fragment>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <React.Fragment>
+              <div className={'app__main'}>
                 <Search callback={this.searchCallback} />
-                <List list={list} />
-                {this.paginatorWrapper()}
-                {IconsCopyright()}
-              </React.Fragment>
-            )}
-          />
-          <Route path="/details/:id" component={Details} />
-          <Route render={() => <Redirect to="/" />} />
-        </Switch>
+                {isLoading ? this.Preloader() : <List list={list} />}
+                {!isLoading ? this.paginatorWrapper() : null}
+              </div>
+              {IconsCopyright()}
+            </React.Fragment>
+          )}
+        />
+        <Route path="/details/:id" component={Details} />
+        <Route render={() => <Redirect to="/" />} />
+      </Switch>
+    );
+  };
+
+  render() {
+    const { list, isLoading } = this.state;
+    return (
+      <Container maxWidth="md" className="app__container">
+        {this.routerTemplate(list, isLoading)}
       </Container>
     );
   }

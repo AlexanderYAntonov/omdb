@@ -1,0 +1,26 @@
+.icons-copyright {
+  font-size: small;
+  color: grey;
+  opacity: 0.5;
+}
+
+#root .app__container {
+  display: flex;
+  flex-direction: column;
+  min-height: 98vh;
+}
+
+.app__main {
+  flex: 1;
+  padding-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+
+  & .app__paginator {
+    align-self: center;
+  }
+
+  & .MuiPagination-ul {
+    flex-wrap: nowrap;
+  }
+}
