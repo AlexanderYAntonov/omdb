@@ -1,7 +1,9 @@
 import React from 'react';
 import { List } from './components/List';
 import { Search } from './components/Search';
+import { Details } from './components/Details';
 import Pagination from '@material-ui/lab/Pagination';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Container from '@material-ui/core/Container';
 import './App.css';
@@ -53,18 +55,29 @@ class App extends React.Component {
   };
 
   render() {
-    // const listData = [];
     const { list, totalPages } = this.state;
     console.log(list);
     return (
       <Container maxWidth="md">
-        <Search callback={this.searchCallback} />
-        <List list={list} />
-        <Pagination
-          count={totalPages}
-          color="primary"
-          onChange={this.handleChange}
-        />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <React.Fragment>
+                <Search callback={this.searchCallback} />
+                <List list={list} />
+                <Pagination
+                  count={totalPages}
+                  color="primary"
+                  onChange={this.handleChange}
+                />
+              </React.Fragment>
+            )}
+          />} />
+          <Route path="/details/:id" component={Details} />
+          <Route render={() => <Redirect to="/" />} />
+        </Switch>
       </Container>
     );
   }
