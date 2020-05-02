@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import CardMedia from '@material-ui/core/CardMedia';
 import './List.scss';
 
 export class List extends React.Component {
@@ -17,10 +18,24 @@ export class List extends React.Component {
         tmpl = (
           <Link to={linkUrl}>
             <div key={item['imdbID']} className="list__media">
-              <img className="list__image" src={item['Poster']} alt="Постер" />
+              <div className="list__poster">
+                <img
+                  className="list__image"
+                  src={item['Poster']}
+                  alt="Постер"
+                />
+                {/* <CardMedia
+                  className={'list__image'}
+                  image={item['Poster']}
+                  title={item['Title']}
+                /> */}
+              </div>
               <div className="list__description">
-                <p>{item['Title']}</p>
-                <p>{item['Year']}</p>
+                <p>
+                  <span className={'list__description-title'}>
+                    {item['Title']}
+                  </span>, <span>{item['Year']}</span>
+                </p>
               </div>
             </div>
           </Link>
