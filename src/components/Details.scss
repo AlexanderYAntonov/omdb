@@ -1,0 +1,17 @@
+.details__card {
+  display: flex;
+  flex-direction: column;
+}
+
+.details__image {
+  align-self: center;
+}
+
+.icon-link {
+  display: flex;
+  align-items: center;
+
+  & .icon {
+    margin-right: 0.5em;
+  }
+}

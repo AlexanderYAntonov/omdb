@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './List.scss';
 
 export class List extends React.Component {
@@ -12,31 +13,18 @@ export class List extends React.Component {
     console.log(data);
     if (data) {
       tmpl = data.map((item) => {
+        const linkUrl = `/details/${item['imdbID']}`;
         tmpl = (
-          <div key={item['imdbID']} className="list__media">
-            <img className="list__image" src={item['Poster']} />
-            <div className="list__description">
-              <p>{item['Title']}</p>
-              <p>{item['Year']}</p>
+          <Link to={linkUrl}>
+            <div key={item['imdbID']} className="list__media">
+              <img className="list__image" src={item['Poster']} alt="Постер" />
+              <div className="list__description">
+                <p>{item['Title']}</p>
+                <p>{item['Year']}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         );
-        // if (item.short) {
-        //   tmpl = (
-        //     <div key={item.id}>
-        //       <p>{item['Title']}</p>
-        //       <p>{item['Year']}</p>
-        //     </div>
-        //   );
-        // } else {
-        //   tmpl = (
-        //     <div key={item.id}>
-        //       <p>{item.title}</p>
-        //       <p>{item.year}</p>
-        //       <p>{item.genre}</p>
-        //     </div>
-        //   );
-        // }
         return tmpl;
       });
     }
@@ -44,10 +32,6 @@ export class List extends React.Component {
   }
 
   render() {
-    // const data = [
-    //   { id: '1', title: 'title1', year: 2018, short: true },
-    //   { id: '2', title: 'title2', year: 2019, short: false, genre: 'action' }
-    // ];
     const { list } = this.props;
     return <React.Fragment>{this.buildTemplate(list)}</React.Fragment>;
   }

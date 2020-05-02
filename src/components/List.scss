@@ -1,7 +1,16 @@
+@import '../Variables.scss';
+
 .list__media {
   display: flex;
+  flex-direction: column;
+  padding: 1em;
 
   & .list__image {
     margin-right: 1em;
+    align-self: center;
   }
+}
+
+.list__description {
+  color: $textColor;
 }

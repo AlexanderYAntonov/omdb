@@ -11,29 +11,55 @@ import './App.css';
 const apiKey = '1977b733';
 const prefixUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 
+function IconsCopyright() {
+  return (
+    <div className="icons-copyright">
+      Icons made by{' '}
+      <a
+        href="https://www.flaticon.com/authors/pixel-perfect"
+        title="Pixel perfect"
+      >
+        Pixel perfect
+      </a>{' '}
+      from{' '}
+      <a href="https://www.flaticon.com/" title="Flaticon">
+        www.flaticon.com
+      </a>
+    </div>
+  );
+}
+
 class App extends React.Component {
   state = {
     list: [],
     isLoading: false,
     pageNum: 0,
     success: true,
-    totalPages: 0
+    totalPages: 0,
+    formData: {}
   };
 
   searchCallback = (formData) => {
-    console.log('make search');
-    console.log(formData);
+    this.setState({ formData, pageNum: 1 });
+    this.getData(formData);
+  };
+
+  handleChange = (event, value) => {
+    const { formData } = this.state;
+    this.setState({ pageNum: value });
+    this.getData(formData, value);
+  };
+
+  getData(formData, pageNum = 0) {
     const { title, year } = formData;
-    const titleStr = title ? `&s=${title}` : '';
+    const titleStr = title ? `&s=${title}*` : '';
     const yearStr = year ? `&y=${year}` : '';
-    const url = prefixUrl + titleStr + yearStr;
-    console.log(url);
-    // set page num
+    const pageStr = pageNum > 0 ? `&page=${pageNum}` : '';
+    const url = prefixUrl + titleStr + yearStr + pageStr;
     this.setState({ isLoading: true });
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const totalPages = data['totalResults']
           ? Math.ceil(data['totalResults'] / 10)
           : 0;
@@ -46,17 +72,29 @@ class App extends React.Component {
       })
       .catch((error) => {
         console.error(error);
-        this.setState({ isLoading: false, list: [] });
+        this.setState({ isLoading: false, list: [], success: false });
       });
-  };
+  }
 
-  handleChange = (event, value) => {
-    console.log(`page = ${value}`);
-  };
+  paginatorWrapper() {
+    let tmpl = null;
+    const { totalPages, pageNum } = this.state;
+    console.log(totalPages);
+    if (totalPages > 1) {
+      tmpl = (
+        <Pagination
+          count={totalPages}
+          page={pageNum}
+          color="primary"
+          onChange={this.handleChange}
+        />
+      );
+    }
+    return tmpl;
+  }
 
   render() {
-    const { list, totalPages } = this.state;
-    console.log(list);
+    const { list } = this.state;
     return (
       <Container maxWidth="md">
         <Switch>
@@ -67,27 +105,11 @@ class App extends React.Component {
               <React.Fragment>
                 <Search callback={this.searchCallback} />
                 <List list={list} />
-                <Pagination
-                  count={totalPages}
-                  color="primary"
-                  onChange={this.handleChange}
-                />
-                <div>
-                  Icons made by{' '}
-                  <a
-                    href="https://www.flaticon.com/authors/pixel-perfect"
-                    title="Pixel perfect"
-                  >
-                    Pixel perfect
-                  </a>{' '}
-                  from{' '}
-                  <a href="https://www.flaticon.com/" title="Flaticon">
-                    www.flaticon.com
-                  </a>
-                </div>
+                {this.paginatorWrapper()}
+                {IconsCopyright()}
               </React.Fragment>
             )}
-          />} />
+          />
           <Route path="/details/:id" component={Details} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

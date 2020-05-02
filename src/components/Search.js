@@ -13,7 +13,6 @@ export class Search extends React.Component {
 
   handleChange = (e) => {
     let { name, value } = e.currentTarget;
-    console.log(name, value);
     if (name === 'year') {
       value = value.replace(/\D/g, '');
       if (value.length > 4) {
@@ -24,26 +23,20 @@ export class Search extends React.Component {
       }
     }
     this.setState({ [name]: value });
-    // this.setState({ value: event.target.value });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
     const { year } = this.state;
     if (year.length === 4 || year === '') {
-      console.log('submit');
       this.props.callback(this.state);
     } else {
-      console.log('year invalid');
       this.setState({ yearIsValid: false });
     }
-
-    // this.setState({ value: event.target.value });
   };
 
   render() {
     const { title, year, yearIsValid } = this.state;
-    console.log(title, year);
     return (
       <form
         autoComplete="off"
