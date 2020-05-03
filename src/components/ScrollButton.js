@@ -2,14 +2,10 @@ import React from 'react';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import './ScrollButton.scss';
 
-class ScrollButton extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      intervalId: 0
-    };
-  }
+export class ScrollButton extends React.Component {
+  state = {
+    intervalId: 0
+  };
 
   componentDidMount() {
     const arrowTop = window.document.getElementById('scroll-top-button');
@@ -46,5 +42,3 @@ class ScrollButton extends React.Component {
     );
   }
 }
-
-export { ScrollButton };

@@ -9,7 +9,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Container from '@material-ui/core/Container';
 import './App.scss';
-import './styles.scss';
 
 const apiKey = '1977b733';
 const prefixUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
@@ -155,9 +154,9 @@ class App extends React.Component {
                 <Search callback={this.searchCallback} />
                 {isLoading ? <Preloader /> : this.listWrapper()}
                 {!isLoading ? this.paginatorWrapper() : null}
-                <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
               </div>
               {IconsCopyright()}
+              <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
             </React.Fragment>
           )}
         />

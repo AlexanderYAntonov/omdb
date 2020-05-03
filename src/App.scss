@@ -1,3 +1,5 @@
+@import './Variables.scss';
+
 .icons-copyright {
   font-size: small;
   color: grey;
@@ -27,4 +29,9 @@
 
 .error {
   text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: $activeColor;
 }

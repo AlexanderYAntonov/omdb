@@ -93,9 +93,9 @@ export class Details extends React.Component {
 
   mapRatings(list) {
     return list.map((item) => (
-      <p key={item['Source']}>
+      <span key={item['Source']}>
         {item['Source']} : {item['Value']}
-      </p>
+      </span>
     ));
   }
 
