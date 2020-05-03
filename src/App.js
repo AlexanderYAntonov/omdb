@@ -14,8 +14,11 @@ const apiKey = '1977b733';
 const prefixUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 
 const LOCAL = {
-  'Movie not found!': 'Фильм не найден'
+  'Movie not found!': 'Фильм не найден',
+  'Too many results.': 'Слишком много результатов'
 };
+
+const ERROR_TEXT = 'Ошибка выполнения запроса';
 
 function IconsCopyright() {
   return (
@@ -41,6 +44,7 @@ class App extends React.Component {
     isLoading: false,
     pageNum: 0,
     success: true,
+    errorMsg: '',
     totalPages: 0,
     formData: {}
   };
@@ -79,28 +83,48 @@ class App extends React.Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        const totalPages = data['totalResults']
-          ? Math.ceil(data['totalResults'] / 10)
-          : 0;
-        if (data['Search']) {
-          data['Search'] = data['Search'].map((item) => {
-            if (!/^http/.test(item['Poster'])) {
-              item['Poster'] = '/assets/icons/logo.svg';
-            }
-            return item;
-          });
-        }
+        const totalPages = this.calcPages(data);
+        this.checkPoster(data['Search']);
+        const errorMsg = this.checkError(data);
+
         this.setState({
           isLoading: false,
           list: data['Search'] || [],
-          success: data['Response'],
+          success: data['Response'] === 'True',
+          errorMsg,
           totalPages
         });
       })
       .catch((error) => {
         console.error(error);
-        this.setState({ isLoading: false, list: [], success: false });
+        this.setState({
+          isLoading: false,
+          list: [],
+          success: false,
+          errorMsg: ERROR_TEXT
+        });
       });
+  }
+
+  calcPages(data) {
+    return data['totalResults'] ? Math.ceil(data['totalResults'] / 10) : 0;
+  }
+
+  checkPoster(list = []) {
+    list = list.map((item) => {
+      if (!/^http/.test(item['Poster'])) {
+        item['Poster'] = '/assets/icons/logo.svg';
+      }
+      return item;
+    });
+  }
+
+  checkError(data) {
+    let msg = '';
+    if (data['Error']) {
+      msg = LOCAL[data['Error']] || ERROR_TEXT;
+    }
+    return msg;
   }
 
   paginatorWrapper() {
@@ -121,7 +145,20 @@ class App extends React.Component {
     return tmpl;
   }
 
-  routerTemplate = (list, isLoading) => {
+  listWrapper() {
+    let tmpl = null;
+    const { list, success, errorMsg } = this.state;
+    console.log(success, errorMsg);
+    if (success) {
+      tmpl = <List list={list} />;
+    } else {
+      console.log('error here');
+      tmpl = <p className="error">{errorMsg}</p>;
+    }
+    return tmpl;
+  }
+
+  routerTemplate = (isLoading) => {
     return (
       <Switch>
         <Route
@@ -131,7 +168,7 @@ class App extends React.Component {
             <React.Fragment>
               <div className={'app__main'}>
                 <Search callback={this.searchCallback} />
-                {isLoading ? this.Preloader() : <List list={list} />}
+                {isLoading ? this.Preloader() : this.listWrapper()}
                 {!isLoading ? this.paginatorWrapper() : null}
                 <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
               </div>
@@ -146,10 +183,10 @@ class App extends React.Component {
   };
 
   render() {
-    const { list, isLoading } = this.state;
+    const { isLoading } = this.state;
     return (
       <Container maxWidth="md" className="app__container">
-        {this.routerTemplate(list, isLoading)}
+        {this.routerTemplate(isLoading)}
       </Container>
     );
   }
