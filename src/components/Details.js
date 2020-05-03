@@ -94,11 +94,13 @@ export class Details extends React.Component {
   };
 
   mapRatings(list) {
-    return list.map((item) => (
-      <span key={item['Source']}>
+    const tmplList = list.map((item) => (
+      <span key={item['Source']} className="details__ratings">
         {item['Source']} : {item['Value']}
       </span>
     ));
+    const tmpl = <div className="details__ratings">{tmplList}</div>;
+    return tmpl;
   }
 
   render() {
