@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import CardMedia from '@material-ui/core/CardMedia';
+import { ScrollButton } from './ScrollButton';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-// import Typography from '@material-ui/core/Typography';
 import './Details.scss';
 
 const apiKey = '1977b733';
@@ -39,12 +38,12 @@ export class Details extends React.Component {
   };
 
   componentDidMount() {
+    window.scroll(0, 0);
+
     const { id } = this.props.match.params;
-    console.log(`read details data for ${id}`);
     const idStr = id ? `&i=${id}` : '';
     const plotStr = '&plot=full';
     const url = prefixUrl + idStr + plotStr;
-    console.log(url);
 
     this.setState({ isLoading: true });
     fetch(url)
@@ -67,7 +66,6 @@ export class Details extends React.Component {
     const { data } = this.state;
     console.log(data);
     const { Poster, Title } = data;
-    // <CardMedia className={'details__image'} image={Poster} title={Title} />
     const posterTmpl = Poster ? (
       <img src={Poster} alt={Title} className={'details__image'} />
     ) : null;
@@ -90,6 +88,8 @@ export class Details extends React.Component {
     return (
       <React.Fragment>
         {this.detailsTemplate()}
+
+        <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
 
         <Link to="/" className={'icon-link'}>
           <KeyboardBackspaceIcon className={'icon'} />Вернуться к поиску
