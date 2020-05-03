@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { ScrollButton } from './ScrollButton';
+import { CloseButton } from './CloseButton';
 import { Preloader } from './Preloader';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -84,6 +85,7 @@ export class Details extends React.Component {
     );
     const tmpl = (
       <Card className={'details__card shadow-drop-2-center scale-up-center'}>
+        <CloseButton />
         {posterTmpl}
         <CardContent className={'details__content'}>{textTmpl}</CardContent>
       </Card>
