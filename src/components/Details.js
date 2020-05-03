@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { ScrollButton } from './ScrollButton';
+import { Preloader } from './Preloader';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import './Details.scss';
@@ -63,18 +64,21 @@ export class Details extends React.Component {
 
   detailsTemplate = () => {
     const keys = Object.keys(LOCAL);
-    const { data } = this.state;
-    console.log(data);
+    const { data, isLoading } = this.state;
     const { Poster, Title } = data;
     const posterTmpl = /^http/.test(Poster) ? (
       <img src={Poster} alt={Title} className={'details__image'} />
     ) : null;
-    const textTmpl = keys.map((key) => (
-      <div key={key} className="details__item">
-        <h3>{LOCAL[key]}</h3>
-        <p>{data[key]}</p>
-      </div>
-    ));
+    const textTmpl = isLoading ? (
+      <Preloader />
+    ) : (
+      keys.map((key) => (
+        <div key={key} className="details__item">
+          <h3>{LOCAL[key]}</h3>
+          <p>{data[key]}</p>
+        </div>
+      ))
+    );
     const tmpl = (
       <Card className={'details__card shadow-drop-2-center scale-up-center'}>
         {posterTmpl}

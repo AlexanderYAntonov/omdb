@@ -6,13 +6,12 @@ import './List.scss';
 export class List extends React.Component {
   buildTemplate(data) {
     let tmpl = null;
-    console.log(data);
     if (data) {
       tmpl = data.map((item) => {
         const linkUrl = `/details/${item['imdbID']}`;
         tmpl = (
-          <Link to={linkUrl}>
-            <div key={item['imdbID']} className="list__media">
+          <Link key={item['imdbID']} to={linkUrl}>
+            <div className="list__media">
               <div className="list__poster">
                 <img
                   className="list__image"

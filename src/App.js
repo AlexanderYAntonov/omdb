@@ -3,6 +3,7 @@ import { List } from './components/List';
 import { Search } from './components/Search';
 import { Details } from './components/Details';
 import { ScrollButton } from './components/ScrollButton';
+import { Preloader } from './components/Preloader';
 import Pagination from '@material-ui/lab/Pagination';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
@@ -47,19 +48,6 @@ class App extends React.Component {
     errorMsg: '',
     totalPages: 0,
     formData: {}
-  };
-
-  Preloader = () => {
-    return (
-      <div className={'lds-container'}>
-        <div className={'lds-ellipsis'}>
-          <div />
-          <div />
-          <div />
-          <div />
-        </div>
-      </div>
-    );
   };
 
   searchCallback = (formData) => {
@@ -130,7 +118,6 @@ class App extends React.Component {
   paginatorWrapper() {
     let tmpl = null;
     const { totalPages, pageNum } = this.state;
-    console.log(totalPages);
     if (totalPages > 1) {
       tmpl = (
         <Pagination
@@ -148,11 +135,9 @@ class App extends React.Component {
   listWrapper() {
     let tmpl = null;
     const { list, success, errorMsg } = this.state;
-    console.log(success, errorMsg);
     if (success) {
       tmpl = <List list={list} />;
     } else {
-      console.log('error here');
       tmpl = <p className="error">{errorMsg}</p>;
     }
     return tmpl;
@@ -168,7 +153,7 @@ class App extends React.Component {
             <React.Fragment>
               <div className={'app__main'}>
                 <Search callback={this.searchCallback} />
-                {isLoading ? this.Preloader() : this.listWrapper()}
+                {isLoading ? <Preloader /> : this.listWrapper()}
                 {!isLoading ? this.paginatorWrapper() : null}
                 <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
               </div>
