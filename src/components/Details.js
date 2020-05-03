@@ -14,6 +14,7 @@ const LOCAL = {
   Title: 'Название',
   Year: 'Год',
   Rated: 'Рейтинг',
+  Ratings: 'Оценки',
   Released: 'Дата выхода',
   Runtime: 'Продолжительность',
   Genre: 'Жанр',
@@ -75,7 +76,9 @@ export class Details extends React.Component {
       keys.map((key) => (
         <div key={key} className="details__item">
           <h3>{LOCAL[key]}</h3>
-          <p>{data[key]}</p>
+          <p>
+            {key !== 'Ratings' ? data[key] : this.mapRatings(data[key] || [])}
+          </p>
         </div>
       ))
     );
@@ -87,6 +90,14 @@ export class Details extends React.Component {
     );
     return tmpl;
   };
+
+  mapRatings(list) {
+    return list.map((item) => (
+      <p key={item['Source']}>
+        {item['Source']} : {item['Value']}
+      </p>
+    ));
+  }
 
   render() {
     return (
