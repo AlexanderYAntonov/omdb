@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   padding: 1em;
-  background-color: rgba(223, 206, 237, 1);
+  background-color: $dashBackground;
   margin-bottom: 1em;
 
   & .list__image {
@@ -15,10 +15,17 @@
 @media screen and(min-width: 800px) {
   .list__media {
     flex-direction: row;
+    transition: transform ease-in 300ms, background-color ease-in 300ms;
 
     & .list__image {
       margin-right: 1em;
       width: 100px;
+    }
+
+    &:hover {
+      background-color: $dashBackgroundHover;
+      box-shadow: 2px 2px 5px grey;
+      transform: translate(-2px, -2px);
     }
   }
 }
