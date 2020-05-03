@@ -1,0 +1,33 @@
+@import '../Variables.scss';
+
+.scroll {
+  opacity: 0.3;
+  background-color: $activeColor;
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 50%;
+  border: 0px;
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  &,
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+@media screen and(min-device-width: 600px) {
+  .scroll:hover {
+    opacity: 0.7;
+  }
+}
+
+.scroll-top__icon {
+  color: white;
+}

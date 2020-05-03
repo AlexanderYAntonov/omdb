@@ -2,6 +2,7 @@ import React from 'react';
 import { List } from './components/List';
 import { Search } from './components/Search';
 import { Details } from './components/Details';
+import { ScrollButton } from './components/ScrollButton';
 import Pagination from '@material-ui/lab/Pagination';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
@@ -77,14 +78,12 @@ class App extends React.Component {
         const totalPages = data['totalResults']
           ? Math.ceil(data['totalResults'] / 10)
           : 0;
-        setTimeout(() => {
-          this.setState({
-            isLoading: false,
-            list: data['Search'] || [],
-            success: data['Response'],
-            totalPages
-          });
-        }, 3000);
+        this.setState({
+          isLoading: false,
+          list: data['Search'] || [],
+          success: data['Response'],
+          totalPages
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -122,6 +121,7 @@ class App extends React.Component {
                 <Search callback={this.searchCallback} />
                 {isLoading ? this.Preloader() : <List list={list} />}
                 {!isLoading ? this.paginatorWrapper() : null}
+                <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
               </div>
               {IconsCopyright()}
             </React.Fragment>
