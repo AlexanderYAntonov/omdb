@@ -66,7 +66,7 @@ export class Details extends React.Component {
     const { data } = this.state;
     console.log(data);
     const { Poster, Title } = data;
-    const posterTmpl = Poster ? (
+    const posterTmpl = /^http/.test(Poster) ? (
       <img src={Poster} alt={Title} className={'details__image'} />
     ) : null;
     const textTmpl = keys.map((key) => (

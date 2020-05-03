@@ -13,6 +13,10 @@ import './styles.scss';
 const apiKey = '1977b733';
 const prefixUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 
+const LOCAL = {
+  'Movie not found!': 'Фильм не найден'
+};
+
 function IconsCopyright() {
   return (
     <div className="icons-copyright">
@@ -78,6 +82,14 @@ class App extends React.Component {
         const totalPages = data['totalResults']
           ? Math.ceil(data['totalResults'] / 10)
           : 0;
+        if (data['Search']) {
+          data['Search'] = data['Search'].map((item) => {
+            if (!/^http/.test(item['Poster'])) {
+              item['Poster'] = '/assets/icons/logo.svg';
+            }
+            return item;
+          });
+        }
         this.setState({
           isLoading: false,
           list: data['Search'] || [],
